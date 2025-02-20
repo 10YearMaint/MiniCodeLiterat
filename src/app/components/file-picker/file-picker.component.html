@@ -1,0 +1,13 @@
+<div class="file-picker-container">
+  <label for="mdSelector">Select an .md file:</label>
+  <select id="mdSelector" (change)="onFileSelected($event)">
+    <option [value]="null" disabled selected>Select .md file</option>
+    <option *ngFor="let file of mdFiles" [value]="file">
+      {{ file }}
+    </option>
+  </select>
+</div>
+
+<div *ngIf="selectedFile" class="markdown-container">
+  <app-markdown-viewer [file]="selectedFile"></app-markdown-viewer>
+</div>

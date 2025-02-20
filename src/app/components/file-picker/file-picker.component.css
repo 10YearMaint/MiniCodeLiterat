@@ -1,0 +1,16 @@
+.file-picker-container {
+  margin-bottom: 1rem;
+
+  label {
+    margin-right: 0.5rem;
+  }
+
+  select {
+    padding: 0.3rem;
+    font-size: 1rem;
+  }
+}
+
+.markdown-container {
+  margin-top: 2rem;
+}

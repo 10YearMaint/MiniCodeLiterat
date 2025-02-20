@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Mini Code Literat</title>
+    <base href="/" />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: "Open Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <app-root></app-root>
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [ ["$", "$"], ["\\(", "\\)"] ],
+          displayMath: [ ["$$","$$"], ["\\[","\\]"] ]
+        },
+      };
+
+      window.renderLaTeX = function() {
+        // Check if MathJax is available
+        if (typeof MathJax === 'undefined' || !MathJax.typesetPromise) {
+          console.warn('MathJax not found or not loaded yet.');
+          return;
+        }
+        // Re-typeset the page
+        MathJax.typesetPromise()
+          .then(() => {
+            console.log('MathJax rendering complete.');
+          })
+          .catch(err => {
+            console.error('MathJax rendering error:', err);
+          });
+      };
+    </script>
+  </body>
+</html>

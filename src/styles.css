@@ -1,0 +1,114 @@
+/* 1) Basic normalization for full page scrolling */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  background-color: #fff;
+  font-family: "Open Sans", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* 2) Example main header with brand color */
+.main-header {
+  background-color: #6A4C9C;
+  padding: 10px;
+  color: #fff;
+  margin-bottom: 20px;
+}
+.main-header h1 {
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+/* 3) Container for large content */
+.container {
+  width: 90%;
+  margin: 0px auto;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* 4) Markdown styling */
+.markdown-body {
+  box-sizing: border-box;
+  min-width: 200px;
+  max-width: 980px;
+  margin: 1em auto;
+  padding: 1.5em;
+  color: #24292e;
+  background-color: #fff;
+  font-size: 16px;
+  line-height: 1.5;
+  word-wrap: break-word;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+/* Optional code block styling with highlight.js + custom overrides */
+.markdown-body pre code {
+  display: block;
+  background-color: #f5f5f5; /* neutral background */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.markdown-body code {
+  background-color: #edecec;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  font-family: 'Consolas', monospace;
+}
+
+/* Style for HTML tables generated from Markdown */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1em;
+}
+
+table thead {
+  background-color: #f2f2f2;
+}
+
+table th,
+table td {
+  border: 1px solid #ddd;
+  padding: 0.75em;
+  text-align: left;
+}
+
+table a {
+  color: #0077cc;
+  text-decoration: none;
+}
+
+table a:hover {
+  text-decoration: underline;
+}
+
+/* 5) Buttons with brand color */
+button {
+  background-color: #6A4C9C;
+  color: #fff;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #999;
+  cursor: not-allowed;
+}
+
+button:hover:enabled {
+  background-color: #8363b2;
+}
+
+/* 6) Let’s hide or restyle sidebars or extra elements if needed */
+.sidebar {
+  display: none !important;
+}
