@@ -9,6 +9,29 @@ let mainWindow;
 // Calculate relative path to the "book" folder
 const baseBook = path.join(__dirname, '../../../book');
 
+function scanDirTree(dirPath) {
+  const nodes = [];
+  const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = path.join(dirPath, entry.name);
+    if (entry.isDirectory()) {
+      nodes.push({
+        name: entry.name,
+        type: 'directory',
+        children: scanDirTree(fullPath)
+      });
+    } else if (entry.name.toLowerCase().endsWith('.md')) {
+      const relativePath = path.relative(baseBook, fullPath);
+      nodes.push({
+        name: entry.name,
+        type: 'file',
+        url: `http://localhost:3001/${relativePath}`
+      });
+    }
+  }
+  return nodes;
+}
+
 function createLocalServer() {
   const expApp = express();
   expApp.use(cors());
@@ -16,34 +39,16 @@ function createLocalServer() {
   // Serve your book folder using the relative path
   expApp.use('/', express.static(baseBook));
 
-  // /list endpoint returns array of .md files
+  // /list endpoint returns nested JSON tree of .md files
   expApp.get('/list', (req, res) => {
-    const allMdFiles = [];
-
-    function scanDir(dirPath) {
-      const entries = fs.readdirSync(dirPath, { withFileTypes: true });
-      for (const entry of entries) {
-        const fullPath = path.join(dirPath, entry.name);
-        if (entry.isDirectory()) {
-          scanDir(fullPath);
-        } else if (entry.name.toLowerCase().endsWith('.md')) {
-          // Build relative path for the file
-          const relativePath = path.relative(baseBook, fullPath);
-          allMdFiles.push(relativePath);
-        }
-      }
-    }
-
-    scanDir(baseBook);
-    res.json(allMdFiles);
+    const tree = scanDirTree(baseBook);
+    res.json(tree);
   });
 
   expApp.listen(3001, () => {
     console.log('Book server at http://localhost:3001');
   });
 }
-
-const isDev = process.env.NODE_ENV === 'development';
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -56,7 +61,7 @@ function createWindow() {
     },
   });
 
-  // Load the correct URL based on the environment
+  // Load the correct URL based on your environment
   mainWindow.loadURL('http://localhost:4200');
 
   mainWindow.on('closed', () => {

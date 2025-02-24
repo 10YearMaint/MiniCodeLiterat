@@ -1,13 +1,57 @@
-<div class="file-picker-container">
-  <label for="mdSelector">Select an .md file:</label>
-  <select id="mdSelector" (change)="onFileSelected($event)">
-    <option [value]="null" disabled selected>Select .md file</option>
-    <option *ngFor="let file of mdFiles" [value]="file">
-      {{ file }}
-    </option>
-  </select>
-</div>
+<!-- File Tree -->
+<mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+  <!-- Leaf (file) nodes -->
+  <mat-tree-node
+    *matTreeNodeDef="let node; when: noChild"
+    matTreeNodePadding
+    [matTreeNodePaddingIndent]="30"
+  >
+    <li
+      class="mat-tree-node"
+      [class.selected]="node === selectedNode"
+      (click)="onFileClick(node)"
+    >
+      <span class="toggle-placeholder"></span>
+      <span class="file-node">{{ node.name }}</span>
+    </li>
+  </mat-tree-node>
 
+  <!-- Expandable (directory) nodes -->
+  <mat-nested-tree-node
+    *matTreeNodeDef="let node; when: hasChild"
+    matTreeNodePadding
+    [matTreeNodePaddingIndent]="30"
+  >
+    <li>
+      <div class="mat-tree-node" [class.selected]="node === selectedNode">
+        <!-- Button only shows expansion state -->
+        <button
+          mat-icon-button
+          matTreeNodeToggle
+          [attr.aria-label]="'toggle ' + node.name"
+          (click)="$event.stopPropagation()"
+        >
+          <mat-icon>
+            {{ treeControl.isExpanded(node) ? 'chevron_right' : 'folder' }}
+          </mat-icon>
+        </button>
+
+        <!-- Folder name: clicking toggles expansion and opens the README if present -->
+        <span
+          class="directory-node"
+          (click)="openDirectoryReadme(node)"
+        >
+          {{ node.name }}
+        </span>
+      </div>
+      <ul [class.tree-invisible]="!treeControl.isExpanded(node)">
+        <ng-container matTreeNodeOutlet></ng-container>
+      </ul>
+    </li>
+  </mat-nested-tree-node>
+</mat-tree>
+
+<!-- Markdown Viewer -->
 <div *ngIf="selectedFile" class="markdown-container">
   <app-markdown-viewer [file]="selectedFile"></app-markdown-viewer>
 </div>

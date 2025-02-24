@@ -1,16 +1,84 @@
-.file-picker-container {
-  margin-bottom: 1rem;
+:host {
+  /* Side-by-side layout */
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
 
-  label {
-    margin-right: 0.5rem;
-  }
-
-  select {
-    padding: 0.3rem;
-    font-size: 1rem;
-  }
+/* Make the file tree take up a fixed or flexible width */
+mat-tree {
+  flex: 0 0 300px; /* or adjust as needed */
+  border-right: 1px solid #ccc;
+  padding-right: 1rem;
+  /* Just a bit of vertical spacing for clarity */
+  margin-top: 1rem;
 }
 
 .markdown-container {
-  margin-top: 2rem;
+  flex: 1;
+  padding: 1rem;
+  overflow: auto;
+}
+
+/* Remove default list styling */
+li {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul {
+  margin: 0;
+  padding-left: 0; /* Rely on matTreeNodePadding for indentation */
+}
+
+/* Use flex with a gap so that the toggle button (or placeholder) and text line up */
+.mat-tree-node {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Fixed-size placeholder for file nodes */
+.toggle-placeholder {
+  display: inline-block;
+  width: 40px; /* same as the toggle button width */
+  height: 40px;
+}
+
+/* Directory text styling */
+.directory-node {
+  font-weight: bold;
+}
+
+/* File text styling */
+.file-node {
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.file-node:hover {
+  background-color: #efefef;
+}
+
+/* Styling the toggle button */
+.mat-icon-button {
+  width: 24px;
+  height: 24px;
+}
+
+/* Hide children when node is collapsed */
+.tree-invisible {
+  display: none;
+}
+
+/* Highlight the currently selected file */
+.selected {
+  background-color: #e0f7fa; /* a light highlight color */
+}
+
+/* Optional icons color or size adjustments */
+.file-icon {
+  font-size: 20px;
+  color: #757575;
 }
