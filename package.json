@@ -1,18 +1,15 @@
 {
   "name": "code-literat",
   "version": "0.0.0",
-  "main": "src/electron/electron.main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --configuration production",
-    "package:mac": "electron-packager . MiniCodeLiterat --platform=darwin --arch=x64 --out=release-builds --overwrite --icon=public/icon.icns",
+    "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
   "files": [
-    "dist/",
-    "src/electron/electron.main.js"
+    "dist/"
   ],
   "private": true,
   "dependencies": {
@@ -26,25 +23,18 @@
     "@angular/platform-browser": "^19.1.0",
     "@angular/platform-browser-dynamic": "^19.1.0",
     "@angular/router": "^19.1.0",
-    "child_process": "^1.0.2",
-    "cors": "^2.8.5",
     "express": "^4.21.2",
-    "fs": "^0.0.1-security",
     "highlight.js": "^11.11.1",
     "marked": "^15.0.7",
-    "path": "^0.12.7",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^19.0.0",
-    "@angular-devkit/build-angular": "^19.1.7",
-    "@angular/cli": "^19.1.7",
+    "@angular-devkit/build-angular": "^19.1.8",
+    "@angular/cli": "^19.1.8",
     "@angular/compiler-cli": "^19.1.0",
     "@types/jasmine": "~5.1.0",
-    "electron": "^34.2.0",
-    "electron-builder": "^25.1.8",
     "jasmine-core": "~5.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
