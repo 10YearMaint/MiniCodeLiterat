@@ -18,7 +18,7 @@ function scanDirTree(dirPath) {
       nodes.push({
         name: entry.name,
         type: 'directory',
-        children: scanDirTree(fullPath)
+        children: scanDirTree(fullPath),
       });
     } else if (entry.name.toLowerCase().endsWith('.md')) {
       // Convert absolute path to a relative path (for constructing the file URL)
@@ -27,7 +27,7 @@ function scanDirTree(dirPath) {
       nodes.push({
         name: entry.name,
         type: 'file',
-        url: `http://localhost:${PORT}/${relativePath}`
+        url: `http://localhost:${PORT}/${relativePath}`,
       });
     }
   }
@@ -61,8 +61,12 @@ const server = http.createServer((req, res) => {
   }
 
   // Otherwise, treat it as a request for a file in the 'book' folder.
-  // Construct the file path on disk:
-  const filePath = path.join(baseBook, decodeURIComponent(parsedUrl.pathname));
+  // ----------------------------------------------------------------
+  //  Change: sanitize backslashes in case someone uses \ instead of /
+  // ----------------------------------------------------------------
+  const rawPathname = decodeURIComponent(parsedUrl.pathname);
+  const safePathname = rawPathname.replace(/\\/g, '/');
+  const filePath = path.join(baseBook, safePathname);
 
   // Check if the file/directory exists:
   fs.stat(filePath, (err, stats) => {
@@ -75,7 +79,6 @@ const server = http.createServer((req, res) => {
 
     if (stats.isDirectory()) {
       // If it's a directory, optionally look for an index file or just 403
-      // For now, let's just 403 for directories (unless you'd like to allow directory listing)
       res.writeHead(403, { 'Content-Type': 'text/plain' });
       res.end('403 Forbidden - Directory');
     } else {

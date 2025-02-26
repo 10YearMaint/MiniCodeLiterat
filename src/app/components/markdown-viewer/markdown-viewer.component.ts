@@ -71,7 +71,7 @@ marked.setOptions({
   ],
 })
 export class MarkdownViewerComponent implements OnChanges {
-  @Input() file: string = ''; // e.g. "math_operations.md"
+  @Input() file: string = ''; // e.g. "nested_folder/README.md"
 
   public renderedMarkdown: SafeHtml = '';
 
@@ -80,6 +80,7 @@ export class MarkdownViewerComponent implements OnChanges {
   public chatOutput: string = '';
   public serverStatus: string = 'Checking server status...';
   public chatButtonDisabled = true;
+  private fetchedMarkdownContent: string = '';
 
   constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
 
@@ -114,7 +115,10 @@ export class MarkdownViewerComponent implements OnChanges {
     // (3) Fetch + parse the Markdown
     this.http.get(mdUrl, { responseType: 'text' }).subscribe({
       next: (markdownContent) => {
-        // Parse to HTML
+        // Save the raw Markdown for future chat
+        this.fetchedMarkdownContent = markdownContent;
+
+        // Parse to HTML for display
         const html = marked.parse(markdownContent, { async: false }) as string;
         // Sanitize for Angular
         this.renderedMarkdown = this.sanitizer.bypassSecurityTrustHtml(html);
@@ -126,6 +130,7 @@ export class MarkdownViewerComponent implements OnChanges {
         }, 0);
       },
       error: (err) => {
+        this.fetchedMarkdownContent = '';
         this.renderedMarkdown = this.sanitizer.bypassSecurityTrustHtml(
           `<p style="color:red;">Error loading ${file}: ${err.message}</p>`
         );
@@ -171,10 +176,16 @@ export class MarkdownViewerComponent implements OnChanges {
 
   /** Chat function */
   public startChat() {
+    // We also send 'file' just so the server knows which file was used,
+    // but we won't rely on it for fetching the content.
     fetch('http://127.0.0.1:8080/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt: this.chatInput, file: this.file }),
+      body: JSON.stringify({
+        prompt: this.chatInput,
+        file: this.file,
+        file_content: this.fetchedMarkdownContent
+      }),
     })
       .then(async (response) => {
         if (response.ok) {
