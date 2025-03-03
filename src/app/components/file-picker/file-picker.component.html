@@ -41,7 +41,7 @@
           class="directory-node"
           (click)="openDirectoryReadme(node)"
         >
-          {{ node.name }}
+          {{ node.name }} <span *ngIf="node.hasReadme" style="margin-left: 8px;">📖</span>
         </span>
       </div>
       <ul [class.tree-invisible]="!treeControl.isExpanded(node)">

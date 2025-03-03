@@ -15,6 +15,7 @@ export interface FileNode {
   url?: string;
   children?: FileNode[];
   readmeUrl?: string;
+  hasReadme?: boolean;
 }
 
 @Component({
@@ -70,6 +71,7 @@ export class FilePickerComponent implements OnInit {
         );
         if (readmeIndex !== -1) {
           node.readmeUrl = node.children[readmeIndex].url;
+          node.hasReadme = true;
           node.children.splice(readmeIndex, 1);
         }
         node.children = this.hideSubfolderReadmes(node.children);
