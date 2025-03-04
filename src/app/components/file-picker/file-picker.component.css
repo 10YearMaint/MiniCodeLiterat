@@ -42,8 +42,8 @@ ul {
 /* Fixed-size placeholder for file nodes */
 .toggle-placeholder {
   display: inline-block;
-  width: 40px; /* same as the toggle button width */
-  height: 40px;
+  width: 0px;
+  height: 0px;
 }
 
 /* Directory text styling */
